@@ -68,23 +68,28 @@ body {
 #touchControls {
   position: absolute;
   bottom: 20px;
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
   z-index: 1000;
+  right: 20px;
 }
 
 #touchControls button {
   background: rgba(0,0,0,0.6);
   color: white;
-  font-size: 24px;
+  font-size: 48px;
   border: 2px solid white;
   border-radius: 12px;
   padding: 14px 18px;
   flex: 1;
   margin: 0 10px;
   max-width: 100px;
+  width: 100px;
+  height: 100px;
   touch-action: manipulation;
+  user-select: none;
+}
+
+#touchControls button:active {
+  background: rgba(60,60,60,0.6);
 }
 
 /* Hide controls on desktop */
@@ -94,7 +99,7 @@ body {
   }
 }
 
-/* Adjust player/platform size for small screens */
+/* Adjust player/platform size for very small screens */
 @media (max-width: 760px) {
   #player {
     width: 45px;
