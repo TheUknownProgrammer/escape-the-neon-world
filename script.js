@@ -1,4 +1,4 @@
-
+ // idea. when the player get's on the top. he will stand on the previous platform. but all other one's will again generate randomly.
 const game = document.getElementById("game");
 const platformsContainer = document.getElementById("platforms");
 const stageCount = document.getElementById("stageCount");
@@ -21,20 +21,16 @@ const spriteSheet = {
   rows: 2,
   cols: 4,
   animationMaxCol: 3,
-  sprite: "resources/player-sprite.png", 
+  sprite: "resources/player-sprite.png",
   cellHeight: 60,
   cellWidth: 60,
   idleRow: 0,
-  walkRow: 1, // Update to point to walking row
-  jumpRow: 0 // Update to point to jumping row
+  walkRow: 1,
+  jumpRow: 0
 };
 
-const randomNum = (min, max) =>
-  Math.floor(Math.random() * (max - min + 1)) + min;
-const randomColor = opacity =>
-  `rgba(${Math.floor(Math.random() * 256)},${Math.floor(
-    Math.random() * 256
-  )},${Math.floor(Math.random() * 256)},${opacity})`;
+const randomNum = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+const randomColor = opacity => `rgba(${Math.floor(Math.random() * 256)},${Math.floor(Math.random() * 256)},${Math.floor(Math.random() * 256)},${opacity})`;
 
 function generatePlatforms() {
   platforms = [];
@@ -42,10 +38,10 @@ function generatePlatforms() {
   for (let i = 0; i < 20; i++) {
     var plat = createPlatform();
 
-    if (Math.random() >= 0.5) { // moving platform
+    if (Math.random() >= 0.5) {
       plat.leftMax = plat.x - 50;
       plat.rightMax = plat.x + plat.width + 50;
-      plat.dx = - (Math.random() * 4 + 2);
+      plat.dx = -(Math.random() * 4 + 2);
       plat.move = function () {
         this.x -= this.dx;
         if (this.x <= this.leftMax || this.x >= this.rightMax) this.dx = -this.dx;
@@ -59,7 +55,6 @@ function generatePlatforms() {
 }
 
 function createPlatform() {
-  // create also moving platforms.
   const plat = document.createElement("div");
   plat.classList.add("platform");
 
@@ -90,21 +85,17 @@ const player = {
   indexSpriteSheetCol: 0,
   indexSpriteSheetRow: spriteSheet.idleRow,
   animationTimer: 0,
-  animationSpeed: 100, // ms between frames
+  animationSpeed: 100,
   lastFrameTime: performance.now(),
   update: function () {
-    if (this.dx > 0.1) {
-      this.dom.style.transform = `scaleX(1)`;
-    } else if (this.dx < -0.1) {
-      this.dom.style.transform = `scaleX(-1)`;
-    }
+    if (this.dx > 0.1) this.dom.style.transform = `scaleX(1)`;
+    else if (this.dx < -0.1) this.dom.style.transform = `scaleX(-1)`;
 
     [this.dx, this.dy, this.x, this.y] = [this.dx, this.dy, this.x, this.y].map(n => parseFloat(n.toFixed(1)));
     this.x += this.dx;
     this.y += this.dy;
 
     if ((keys.has("ArrowUp") || keys.has("KeyW")) && this.isAllowJump) {
-      // Handles AllowJumps
       this.dy = -16;
       this.isAllowJump = false;
       jumpSound.currentTime = 0;
@@ -112,7 +103,6 @@ const player = {
     }
 
     if (keys.has("ArrowRight") || keys.has("KeyD")) {
-      // handle Right Player Movement
       if (this.dx < this.maxSpeedX) this.dx += 0.1;
       else this.dx = this.maxSpeedX;
     } else if (Math.sign(this.dx) == 1) {
@@ -131,10 +121,7 @@ const player = {
 
     const now = performance.now();
     const isMoving = Math.abs(this.dx) > 0.1;
-    const isOnGround = this.ground != null &&
-    this.y < this.ground.y &&
-    (Math.sign(this.dy) == 1 || Math.sign(this.dy) == 0);
-
+    const isOnGround = this.ground != null && this.y < this.ground.y && (Math.sign(this.dy) == 1 || Math.sign(this.dy) == 0);
 
     if (isMoving && isOnGround) {
       if (now - this.lastFrameTime > this.animationSpeed) {
@@ -143,10 +130,10 @@ const player = {
         this.lastFrameTime = now;
       }
     } else if (!isOnGround) {
-      this.indexSpriteSheetCol = 3; // Fixed frame for jumping
+      this.indexSpriteSheetCol = 3;
       this.indexSpriteSheetRow = spriteSheet.jumpRow;
     } else {
-      this.indexSpriteSheetCol = 0; // Reset frame for idle
+      this.indexSpriteSheetCol = 0;
       this.indexSpriteSheetRow = spriteSheet.idleRow;
       this.lastFrameTime = now;
     }
@@ -165,18 +152,12 @@ const player = {
     }
     this.ground = this.getSurface();
 
-    if (
-      this.ground != null &&
-      this.y < this.ground.y &&
-      (Math.sign(this.dy) == 1 || Math.sign(this.dy) == 0) &&
-      collisionSide(this, this.ground) == "bottom"
-    ) { // if player on a Certain floor.
+    if (this.ground != null && this.y < this.ground.y && (Math.sign(this.dy) == 1 || Math.sign(this.dy) == 0) && collisionSide(this, this.ground) == "bottom") {
       this.dy = 0;
       this.y = this.ground.y - this.height;
       this.isAllowJump = true;
 
       var isMove = keys.has("ArrowLeft") || keys.has("KeyA") || keys.has("ArrowRight") || keys.has("KeyD");
-
       if (this.ground.hasOwnProperty("dx") && !isMove) this.dx = -this.ground.dx;
     } else {
       this.dy += gravity;
@@ -199,6 +180,20 @@ function init() {
   playerDom.style.left = player.x;
   window.addEventListener("keydown", (e) => keys.add(e.code));
   window.addEventListener("keyup", (e) => keys.delete(e.code));
+
+  // Touch controls for mobile
+  document.getElementById("leftBtn").addEventListener("touchstart", () => keys.add("ArrowLeft"));
+  document.getElementById("rightBtn").addEventListener("touchstart", () => keys.add("ArrowRight"));
+  document.getElementById("jumpBtn").addEventListener("touchstart", () => keys.add("ArrowUp"));
+
+  ["leftBtn", "rightBtn", "jumpBtn"].forEach(id => {
+    document.getElementById(id).addEventListener("touchend", () => {
+      keys.delete("ArrowLeft");
+      keys.delete("ArrowRight");
+      keys.delete("ArrowUp");
+    });
+  });
+
   game.style.width = window.innerWidth + "px";
   game.style.height = window.innerHeight + "px";
   gameWidth = game.clientWidth;
@@ -252,10 +247,8 @@ function collisionSide(rect1, rect2) {
 
   if (depthX != 0 && depthY != 0) {
     if (Math.abs(depthX) < Math.abs(depthY)) {
-      // Collision along the X axis.
       return depthX > 0 ? "left" : "right";
     } else {
-      // Collision along the Y axis.
       return depthY > 0 ? "top" : "bottom";
     }
   }
