@@ -1,4 +1,4 @@
- // idea. when the player get's on the top. he will stand on the previous platform. but all other one's will again generate randomly.
+
 const game = document.getElementById("game");
 const platformsContainer = document.getElementById("platforms");
 const stageCount = document.getElementById("stageCount");
@@ -10,7 +10,7 @@ const playerRect = playerDom.getBoundingClientRect();
 var gameWidth = game.clientWidth;
 var gameHeight = game.clientHeight;
 
-const gravity = 1 / 3; // a third of one.
+const gravity = 1 / 3; 
 
 const ground = { x: 0, y: gameHeight, width: gameWidth, height: parseFloat(window.getComputedStyle(game).borderBottom) };
 var platforms = [];
