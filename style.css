@@ -94,8 +94,8 @@ body {
   }
 }
 
-/* Adjust player/platform size for very small screens */
-@media (max-width: 480px) {
+/* Adjust player/platform size for small screens */
+@media (max-width: 760px) {
   #player {
     width: 45px;
     height: 45px;
