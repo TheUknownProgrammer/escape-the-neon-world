@@ -183,8 +183,13 @@ function init() {
 
   // Touch controls for mobile
   document.getElementById("leftBtn").addEventListener("touchstart", () => keys.add("ArrowLeft"));
+  document.getElementById("leftBtn").addEventListener("touchend", () => keys.delete("ArrowLeft"));
+    
   document.getElementById("rightBtn").addEventListener("touchstart", () => keys.add("ArrowRight"));
+  document.getElementById("rightBtn").addEventListener("touchend", () => keys.delete("ArrowRight"));
+
   document.getElementById("jumpBtn").addEventListener("touchstart", () => keys.add("ArrowUp"));
+  document.getElementById("jumpBtn").addEventListener("touchend", () => keys.delete("ArrowUp"));
 
   ["leftBtn", "rightBtn", "jumpBtn"].forEach(id => {
     document.getElementById(id).addEventListener("touchend", () => {
