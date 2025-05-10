@@ -1,0 +1,65 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+}
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+#game {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-bottom: 50px solid transparent;
+  border-image: url("resources/neon-texture.jpg") 10 stretch;
+  background-image: url("resources/neon-bc.png");
+  background-size: 100% 100%;
+  background-position: left top; 
+}
+#game > * {
+  position: absolute;
+}
+#player {
+  width: 60px;
+  height: 60px;
+  bottom: 0;
+  z-index: 1;
+  background-image: url("resources/player-sprite.png");
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position: 0 0;
+}
+#stageContainer {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: 24px;
+  color: white;
+  background: rgba(0,0,0,0.4);
+  padding: 6px 14px;
+  border-radius: 8px;
+  user-select: none;
+  z-index: 100;
+  pointer-events: none;
+}
+#platforms {
+  display: grid;
+  grid-template-columns: repeat(10, auto);
+  grid-template-rows: repeat(10, auto);
+  width: 100%;
+  height: 100%;
+  align-items: center;
+}
+.platform {
+  background-size: cover;
+  background-position: center center;
+  background-image: url("resources/platform.jpg");
+  position: absolute;
+  border: 2.5px solid black;
+}
