@@ -1,4 +1,4 @@
-// idea. when the player get's on the top. he will stand on the previous platform. but all other one's will again generate randomly.
+
 const game = document.getElementById("game");
 const platformsContainer = document.getElementById("platforms");
 const stageCount = document.getElementById("stageCount");
@@ -17,13 +17,11 @@ var platforms = [];
 var animationPlayer;
 const jumpSound = new Audio("resources/SFXS/jump.mp3");
 
-// add arrows that shows the player movement and jump. when hold or clicked.
-
 const spriteSheet = {
   rows: 2,
   cols: 4,
   animationMaxCol: 3,
-  sprite: "resources/player-sprite.png", // path to your sprite sheet
+  sprite: "resources/player-sprite.png", 
   cellHeight: 60,
   cellWidth: 60,
   idleRow: 0,
@@ -39,7 +37,6 @@ const randomColor = opacity =>
   )},${Math.floor(Math.random() * 256)},${opacity})`;
 
 function generatePlatforms() {
-  // fix: generate the platforms without touching each other.
   platforms = [];
   platformsContainer.innerHTML = "";
   for (let i = 0; i < 20; i++) {
@@ -101,7 +98,6 @@ const player = {
     } else if (this.dx < -0.1) {
       this.dom.style.transform = `scaleX(-1)`;
     }
-    //  playerDom.style.background = `url('${spriteSheet.sprite}') ${-(spriteSheet.cellWidth * this.indexSpriteSheetCol)}px ${spriteSheet.cellHeight * this.indexSpriteSheetRow}px`;
 
     [this.dx, this.dy, this.x, this.y] = [this.dx, this.dy, this.x, this.y].map(n => parseFloat(n.toFixed(1)));
     this.x += this.dx;
@@ -193,7 +189,6 @@ const player = {
   playerOnFloor() {
     var floors = [ground, ...platforms];
     for (let i = 0; i < floors.length; i++) {
-      // small problem. when a player jumps on a platform, he could double jump the platform.
       if (collisionDetection(this, floors[i])) return floors[i];
     }
     return null;
