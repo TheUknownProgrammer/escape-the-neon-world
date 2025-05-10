@@ -63,3 +63,44 @@ body {
   position: absolute;
   border: 2.5px solid black;
 }
+
+/* Mobile Touch Controls */
+#touchControls {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  z-index: 1000;
+}
+
+#touchControls button {
+  background: rgba(0,0,0,0.6);
+  color: white;
+  font-size: 24px;
+  border: 2px solid white;
+  border-radius: 12px;
+  padding: 14px 18px;
+  flex: 1;
+  margin: 0 10px;
+  max-width: 100px;
+  touch-action: manipulation;
+}
+
+/* Hide controls on desktop */
+@media (pointer: fine) {
+  #touchControls {
+    display: none;
+  }
+}
+
+/* Adjust player/platform size for very small screens */
+@media (max-width: 480px) {
+  #player {
+    width: 45px;
+    height: 45px;
+  }
+  .platform {
+    border-width: 2px;
+  }
+}
